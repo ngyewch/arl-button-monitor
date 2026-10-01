@@ -1,0 +1,9 @@
+pollPeriod: 50ms
+debouncePeriod: 100ms
+buttons:
+  - id: left
+    gpioPinName: FT232H.C0
+    pressedLevel: High
+  - id: right
+    gpioPinName: FT232H.C1
+    pressedLevel: High
