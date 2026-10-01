@@ -1,4 +1,4 @@
-package ft232h
+package base
 
 import "github.com/F2077/go-pubsub/pubsub"
 

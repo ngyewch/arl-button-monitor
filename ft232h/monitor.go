@@ -6,15 +6,11 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/F2077/go-pubsub/pubsub"
 	buttonmonitor "github.com/ngyewch/arl-button-monitor"
+	"github.com/ngyewch/arl-button-monitor/base"
 	"github.com/zmwangx/debounce"
 	"periph.io/x/conn/v3/gpio"
 	"periph.io/x/conn/v3/gpio/gpioreg"
-)
-
-const (
-	topicButtonPressed = "buttonPressed"
 )
 
 type Button struct {
@@ -25,42 +21,44 @@ type Button struct {
 }
 
 type ButtonMonitor struct {
-	cfg       Config
-	buttons   []Button
-	broker    *pubsub.Broker[string]
-	publisher *pubsub.Publisher[string]
-	cancel    func()
+	cfg     Config
+	base    *base.ButtonMonitor
+	buttons []Button
+	cancel  func()
 }
 
 func New(cfg Config) (*ButtonMonitor, error) {
-	ft232h := findFT232H()
-	if ft232h == nil {
-		return nil, fmt.Errorf("could not find FT232H device on the USB bus")
-	}
-	broker, err := pubsub.NewBroker[string]()
+	baseButtonMonitor, err := base.New()
 	if err != nil {
 		return nil, err
 	}
-	publisher := pubsub.NewPublisher[string](broker)
+	ft232h := findFT232H()
+	if ft232h == nil {
+		_ = baseButtonMonitor.Close()
+		return nil, fmt.Errorf("could not find FT232H device on the USB bus")
+	}
 	var buttons []Button
 	for _, buttonConfig := range cfg.Buttons {
 		pin := gpioreg.ByName(buttonConfig.GPIOPinName)
 		if pin == nil {
+			_ = baseButtonMonitor.Close()
 			return nil, fmt.Errorf("could not find GPIO pin %s", buttonConfig.GPIOPinName)
 		}
 		err := pin.In(gpio.PullNoChange, gpio.NoEdge)
 		if err != nil {
+			_ = baseButtonMonitor.Close()
 			return nil, err
 		}
 		pressedLevel, err := levelFromString(buttonConfig.PressedLevel)
 		if err != nil {
+			_ = baseButtonMonitor.Close()
 			return nil, err
 		}
 		debounced, _ := debounce.Debounce(func() {
 			slog.Debug("button pressed",
 				slog.String("id", buttonConfig.ID),
 			)
-			err = publisher.Publish(topicButtonPressed, buttonConfig.ID)
+			err = baseButtonMonitor.Publish(buttonConfig.ID)
 			if err != nil {
 				slog.Error("could not publish button press event",
 					slog.Any("err", err),
@@ -76,11 +74,10 @@ func New(cfg Config) (*ButtonMonitor, error) {
 	}
 	runCtx, cancel := context.WithCancel(context.Background())
 	bm := &ButtonMonitor{
-		cfg:       cfg,
-		buttons:   buttons,
-		broker:    broker,
-		publisher: publisher,
-		cancel:    cancel,
+		cfg:     cfg,
+		base:    baseButtonMonitor,
+		buttons: buttons,
+		cancel:  cancel,
 	}
 	go bm.run(runCtx)
 	return bm, nil
@@ -90,20 +87,12 @@ func (bm *ButtonMonitor) Close() error {
 	if bm.cancel != nil {
 		bm.cancel()
 	}
+	_ = bm.base.Close()
 	return nil
 }
 
 func (bm *ButtonMonitor) Subscribe() (buttonmonitor.Subscription[string], error) {
-	subscriber := pubsub.NewSubscriber[string](bm.broker)
-	subscription, err := subscriber.Subscribe(topicButtonPressed, pubsub.WithChannelSize[string](pubsub.DefaultChannelSize))
-	if err != nil {
-		_ = subscriber.Close()
-		return nil, err
-	}
-	return &customSubscription[string]{
-		subscriber:   subscriber,
-		subscription: subscription,
-	}, nil
+	return bm.base.Subscribe()
 }
 
 func (bm *ButtonMonitor) run(ctx context.Context) {
