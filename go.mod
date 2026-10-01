@@ -1,4 +1,4 @@
-module github.com/ngyewch/arl/button-monitor
+module github.com/ngyewch/arl-button-monitor
 
 go 1.26.0
 

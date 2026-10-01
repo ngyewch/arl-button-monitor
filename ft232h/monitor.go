@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/F2077/go-pubsub/pubsub"
-	buttonmonitor "github.com/ngyewch/arl/button-monitor"
+	buttonmonitor "github.com/ngyewch/arl-button-monitor"
 	"github.com/zmwangx/debounce"
 	"periph.io/x/conn/v3/gpio"
 	"periph.io/x/conn/v3/gpio/gpioreg"

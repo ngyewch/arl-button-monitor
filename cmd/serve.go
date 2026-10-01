@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	buttonmonitor "github.com/ngyewch/arl/button-monitor"
-	"github.com/ngyewch/arl/button-monitor/ft232h"
+	buttonmonitor "github.com/ngyewch/arl-button-monitor"
+	"github.com/ngyewch/arl-button-monitor/ft232h"
 	"github.com/urfave/cli/v3"
 	"golang.org/x/sync/errgroup"
 )

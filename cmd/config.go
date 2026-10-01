@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/goccy/go-yaml"
-	"github.com/ngyewch/arl/button-monitor/ft232h"
+	"github.com/ngyewch/arl-button-monitor/ft232h"
 	"github.com/urfave/cli/v3"
 )
 
