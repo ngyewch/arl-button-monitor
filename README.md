@@ -1,3 +1,7 @@
 # arl-button-monitor
 
-FT232H implementation requires `CGO_ENABLED=1`.
+Implementations:
+* FT232H 
+  * Requires `CGO_ENABLED=1`
+* Game controller
+  * Linux only 
