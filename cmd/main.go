@@ -17,6 +17,12 @@ var (
 		Value:   "config.yml",
 		Sources: cli.EnvVars("CONFIG_FILE"),
 	}
+	typeFlag = &cli.StringFlag{
+		Name:    "type",
+		Usage:   "type",
+		Value:   "ft232h",
+		Sources: cli.EnvVars("TYPE"),
+	}
 
 	app = &cli.Command{
 		Name:    "arl-button-monitor",
@@ -28,6 +34,7 @@ var (
 				Action: doServe,
 				Flags: []cli.Flag{
 					configFileFlag,
+					typeFlag,
 				},
 			},
 		},

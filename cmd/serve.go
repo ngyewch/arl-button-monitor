@@ -8,22 +8,16 @@ import (
 	"syscall"
 
 	buttonmonitor "github.com/ngyewch/arl-button-monitor"
-	"github.com/ngyewch/arl-button-monitor/ft232h"
 	"github.com/urfave/cli/v3"
 	"golang.org/x/sync/errgroup"
 )
 
 func doServe(ctx context.Context, cmd *cli.Command) error {
-	cfg, err := loadConfig(ctx, cmd)
+	buttonMonitor, err := newButtonMonitor(ctx, cmd)
 	if err != nil {
 		return err
 	}
-
-	buttonMonitor, err := ft232h.New(*cfg)
-	if err != nil {
-		return err
-	}
-	defer func(buttonMonitor *ft232h.ButtonMonitor) {
+	defer func(buttonMonitor buttonmonitor.ButtonMonitor) {
 		_ = buttonMonitor.Close()
 	}(buttonMonitor)
 

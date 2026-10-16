@@ -7,11 +7,10 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/goccy/go-yaml"
-	"github.com/ngyewch/arl-button-monitor/ft232h"
 	"github.com/urfave/cli/v3"
 )
 
-func loadConfig(ctx context.Context, cmd *cli.Command) (*ft232h.Config, error) {
+func loadConfig[T any, PT *T](ctx context.Context, cmd *cli.Command) (PT, error) {
 	configFile := cmd.String(configFileFlag.Name)
 
 	if configFile == "" {
@@ -27,7 +26,7 @@ func loadConfig(ctx context.Context, cmd *cli.Command) (*ft232h.Config, error) {
 	}(f)
 
 	yamlDecoder := yaml.NewDecoder(f, yaml.Strict())
-	var cfg ft232h.Config
+	var cfg T
 	err = yamlDecoder.Decode(&cfg)
 	if err != nil {
 		return nil, err
