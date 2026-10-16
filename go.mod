@@ -8,9 +8,9 @@ require (
 	github.com/goccy/go-yaml v1.19.2
 	github.com/jwalton/go-supportscolor v1.2.0
 	github.com/phsym/console-slog v0.3.1
-	github.com/urfave/cli/v3 v3.13.0
+	github.com/urfave/cli/v3 v3.14.0
 	github.com/zmwangx/debounce v1.0.0
-	golang.org/x/sync v0.23.0
+	golang.org/x/sync v0.24.0
 	periph.io/x/conn/v3 v3.7.3
 	periph.io/x/host/v3 v3.8.5
 )
