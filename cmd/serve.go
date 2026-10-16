@@ -41,9 +41,9 @@ func doServe(ctx context.Context, cmd *cli.Command) error {
 				return nil
 			case err := <-subscription.ErrCh():
 				return err
-			case buttonId := <-subscription.Ch():
+			case buttonID := <-subscription.Ch():
 				slog.Info("button pressed",
-					slog.String("buttonId", buttonId),
+					slog.String("buttonId", buttonID),
 				)
 			}
 		}

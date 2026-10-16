@@ -1,5 +1,7 @@
 github.com/F2077/go-pubsub v1.2.0 h1:H62PDTbebQRxKoIUDIz5bkYhSt0aeO9BkqqPeaING8k=
 github.com/F2077/go-pubsub v1.2.0/go.mod h1:M8shKQu9zYhFuaiMIT4g3GiI+xjPbygkbdqA7wOA5D0=
+github.com/doingharm/go-gamepad-bus v0.9.0 h1:GUoIwkYIDUdLMzRz/6/xuYlXpX1ZLrm0a+KOLItIOiM=
+github.com/doingharm/go-gamepad-bus v0.9.0/go.mod h1:RgsHYZfHZD8LFBEuIZQixhHmhIaTVjtz6Di8g8zKei0=
 github.com/gabriel-vasile/mimetype v1.4.15 h1:05iP/CYtZ/w455R/KZM6rZ5ieAdh99UPtd+d3YzLmaI=
 github.com/gabriel-vasile/mimetype v1.4.15/go.mod h1:azpTcoLcDZRNgFou5j+APrqQx9HqVPWa6ijYQIIVswQ=
 github.com/go-playground/assert/v2 v2.2.0 h1:JvknZsQTYeFEAhQwI4qEt9cyV5ONwRHC+lYKSsYSR8s=

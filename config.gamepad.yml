@@ -1,0 +1,7 @@
+buttons:
+  - id: button1
+    gamepadId: js0
+    buttonId: 0
+  - id: button2
+    gamepadId: js0
+    buttonId: 1
